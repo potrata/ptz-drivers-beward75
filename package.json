@@ -1,0 +1,41 @@
+{
+  "name": "@hp/ptz-drivers-beward75",
+  "version": "0.0.0",
+  "model": "beward_75",
+  "description": "PTZ Driver for Beward-75",
+  "main": "./lib/index",
+  "scripts": {
+    "clean": "rm -rf ./lib/*",
+    "build": "npm run clean && npm run lint && babel --source-maps --copy-files -d ./lib ./src",
+    "postbuild": "npm test",
+    "debug": "babel-node --extensions='.es6' --debug-brk ./",
+    "lint": "eslint --ext .es6 ./src",
+    "test": "blue-tape ./lib/test/*.js | tap-spec",
+    "patch": "npm run build && npm version patch && git push origin --follow-tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://stash.head-point.ru/scm/ptzdrv/ptz-drivers-beward75"
+  },
+  "author": "Nikolay Chursin <n_chursin@head-point.ru>",
+  "license": "ISC",
+  "bundleDependencies": [
+    "babel-runtime",
+    "request-promise",
+    "validate.js",
+    "ramda"
+  ],
+  "dependencies": {
+    "babel-runtime": "^5.x.x",
+    "ramda": "^0.x.x",
+    "request-promise": "^0.x.x",
+    "validate.js": "^0.x.x"
+  },
+  "devDependencies": {
+    "babel": "^5.x.x",
+    "eslint": "^1.x.x",
+    "babel-eslint": "^4.x.x",
+    "blue-tape": "^0.x.x",
+    "tap-spec": "^4.x.x"
+  }
+}
