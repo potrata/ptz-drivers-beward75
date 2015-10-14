@@ -38,12 +38,13 @@ export const model = pkg.model;
  */
 export function execute(command, options = {}) {
   const _command = transformCommand(command); // TEMPORARY
-  console.log(_command);
-  return R.pipeP(
+  const pipeline = R.pipeP(
     validateCommand,
     normalizeData,
     buildRequestData(options),
     request,
     parseReply
-  )(_command);
+  );
+  
+  return pipeline(_command);
 }

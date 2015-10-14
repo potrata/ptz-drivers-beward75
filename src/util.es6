@@ -1,18 +1,12 @@
-import {
-  T, always, identity, concat, curry,
-  pipe, map, join, prop, props,
-  cond, zip, propEq, useWith,
+import R, {
+  always, identity, concat, curry,
+  pipe, map, join, prop, props, has,
+  zip, useWith, converge, unless,
 } from 'ramda';
 
 const throwError = (data) => {
   throw new Error(data);
 };
-
-// getAction :: {k:v} -> v
-const getAction = prop('action');
-
-// actionEquals :: String -> Boolean
-const actionEquals = propEq('action');
 
 // getParams :: {k:v} -> [v]
 const getParams = props(['x', 'y', 'z']);
@@ -31,23 +25,29 @@ const mapParamsToQuery = curry(
   )
 );
 
+const actionParamsLookup = {
+  ['setPosition']: mapParamsToQuery(['pan', 'tilt', 'zoom']),
+  ['changePosition']: mapParamsToQuery(['rpan', 'rtilt', 'rzoom']),
+  ['getPosition']: always(pairToQueryPart(['query', 'position'])),
+};
+
+// isActionValid :: String -> Boolean
+const isActionValid = has(R.__, actionParamsLookup);
+
+// getAction :: {k:v} -> v | Error
+const getAction = R.pipe(
+  prop('action'),
+  unless(
+    isActionValid,
+    pipe(concat('unknown action: '), throwError),
+  )
+);
+
 
 // convertData :: {*} -> String | Error
-export const buildQueryString = cond([
-  [
-    actionEquals('setPosition'),
-    mapParamsToQuery(['pan', 'tilt', 'zoom']),
-  ],
-  [
-    actionEquals('changePosition'),
-    mapParamsToQuery(['rpan', 'rtilt', 'rzoom']),
-  ],
-  [
-    actionEquals('getPosition'),
-    pipe(always(['query', 'position']), pairToQueryPart),
-  ],
-  [
-    T,
-    pipe(getAction, concat('unknown action: '), throwError),
-  ],
-]);
+export const buildQueryString = converge(
+  R.call, [
+    pipe(getAction, prop(R.__, actionParamsLookup)),
+    identity,
+  ]
+);
