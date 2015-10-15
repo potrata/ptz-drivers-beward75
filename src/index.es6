@@ -20,7 +20,7 @@ const buildRequestData = (options) => {
 const transformCommand = (command) => {
   return R.converge(
     R.unapply(R.mergeAll), [
-      R.path(['action', 'params']),
+      R.pick(['x', 'y', 'z']),
       R.path(['camera']),
       R.pipe(R.path(['action', 'type']), R.objOf('action')),
     ]
@@ -45,6 +45,5 @@ export function execute(command, options = {}) {
     request,
     parseReply
   );
-  
   return pipeline(_command);
 }
