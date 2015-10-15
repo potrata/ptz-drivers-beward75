@@ -1,5 +1,4 @@
 import R from 'ramda';
-
 import {dataBounds} from './const';
 
 // divideBy :: Number -> Number -> Number
@@ -9,7 +8,7 @@ const divideBy = R.flip(R.divide);
 const subtractBy = R.flip(R.subtract);
 
 // clamp :: Number -> Number -> Number -> Number
-const clamp = R.curry((a, b) => R.pipe(R.min(b), R.max(a)));
+const clamp = R.useWith(R.pipe, [R.max, R.min]);
 
 // scaler :: ([a],[b]) -> Number -> Number
 const scaler = ([fromMin, fromMax], [toMin, toMax]) => {

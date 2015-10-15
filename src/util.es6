@@ -1,7 +1,7 @@
 import R, {
   always, identity, concat, curry,
   pipe, map, join, prop, props, has,
-  zip, useWith, converge, unless,
+  zip, zipObj, useWith, converge, unless,
 } from 'ramda';
 
 const throwError = (data) => {
@@ -50,4 +50,10 @@ export const buildQueryString = converge(
     pipe(getAction, prop(R.__, actionParamsLookup)),
     identity,
   ]
+);
+
+// mapReplyKeys :: {k1:v} -> {k2:v}
+export const mapReplyKeys = pipe(
+  props(['pan', 'tilt', 'zoom']),
+  zipObj(['x', 'y', 'z'])
 );
