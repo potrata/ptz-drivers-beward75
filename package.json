@@ -6,10 +6,11 @@
   "main": "./lib/index",
   "scripts": {
     "clean": "rm -rf ./lib/*",
-    "build": "npm run clean && npm run lint && babel --source-maps --copy-files -d ./lib ./src",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "babel --source-maps --copy-files -d ./lib ./src",
     "postbuild": "npm test",
-    "debug": "babel-node --extensions='.es6' --debug-brk ./",
-    "lint": "eslint --ext .es6 ./src",
+    "debug": "babel-node --debug-brk ./",
+    "lint": "eslint ./src",
     "test": "blue-tape ./lib/test/*.js | tap-spec",
     "patch": "npm run build && npm version patch && git push origin --follow-tags && npm publish"
   },
@@ -28,7 +29,7 @@
   "dependencies": {
     "babel-runtime": "^5.x.x",
     "ramda": "^0.x.x",
-    "request-promise": "^0.x.x",
+    "request-promise": "^1.x.x",
     "validate.js": "^0.x.x"
   },
   "devDependencies": {

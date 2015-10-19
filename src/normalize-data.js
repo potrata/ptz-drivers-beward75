@@ -1,6 +1,5 @@
 import R from 'ramda';
-
-import {dataBounds} from './const';
+import {dataBounds} from './constants';
 
 // divideBy :: Number -> Number -> Number
 const divideBy = R.flip(R.divide);

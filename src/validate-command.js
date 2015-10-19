@@ -1,5 +1,5 @@
-import {validate} from 'validate.js';
-import {actionsSupported} from './const';
+import validate from 'validate.js';
+import {actionsSupported} from './constants';
 
 const dataConstraint = {
   presence: true,
