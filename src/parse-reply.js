@@ -1,12 +1,14 @@
+import {mapReplyKeys} from './util';
+
 const getMatchesOrEmpty = (text, regex) => {
-  return text.match(regex) || [];
+  return text.trim().match(regex) || [];
 };
 /**
  * expressionToObj :: String -> {k:v}
  */
 const expressionToObj = (expression) => {
   const [key, value] = expression.split('=').map(token => token.trim());
-  return { [key]: value };
+  return { [key]: Math.round(value) };
 };
 
 /**
@@ -27,5 +29,5 @@ export default function parseReply(reply) {
     /** just throw in case of finding no matches at all **/
     throw new Error(`reply parsing failed:\n${reply}`);
   }
-  return result;
+  return mapReplyKeys(result);
 }
