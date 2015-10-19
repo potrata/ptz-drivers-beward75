@@ -1,28 +1,28 @@
 export const dataBounds = {
-  ['setPosition']: {
-    ['x']: {
+  'setPosition': {
+    'x': {
       input: [-180, 180],
       output: [-180, 180],
     },
-    ['y']: {
+    'y': {
       input: [-180, 180],
       output: [-10, 190],
     },
-    ['z']: {
+    'z': {
       input: [0, 100],
       output: [0, 9999],
     },
   },
-  ['changePosition']: {
-    ['x']: {
+  'changePosition': {
+    'x': {
       input: [-180, 180],
       output: [-180, 180],
     },
-    ['y']: {
+    'y': {
       input: [-180, 180],
       output: [-10, 190],
     },
-    ['z']: {
+    'z': {
       input: [0, 100],
       output: [-9999, 9999],
     },
