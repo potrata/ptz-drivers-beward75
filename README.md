@@ -15,9 +15,16 @@ Host: <Your_API_Endpoint>
 Content-Type: application/json
 Cache-Control: no-cache
 {
-    "id": "beward75",
+    "id": "beward_75",
     "model": "beward_75",
     "packageUrl": "@hp/ptz-drivers-beward75",
     "version": "latest"
 }
 ```
+
+
+### List of currently ready and supported actions
+    - setPosition
+    - getPosition
+    - changePosition
+    - changePositionZoomed

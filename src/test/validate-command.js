@@ -1,7 +1,7 @@
-import tape from 'blue-tape';
+import test from 'blue-tape';
 import validateCommand from './../validate-command';
 
-tape('Command validation', (t) => {
+test('Command validation', (t) => {
   t.test('passes valid command through', () => {
     return validateCommand({
       ip: '2.3.4.5',

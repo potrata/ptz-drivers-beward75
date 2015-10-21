@@ -41,3 +41,42 @@ test('Data Normalization', (t) => {
     assert.end();
   });
 });
+
+test('Data transformations with "changePositionZoomed" command', (t) => {
+  t.test('ignores "z" parameter (pass it through)', (assert) => {
+    const result = normalizeData({
+      action: 'changePositionZoomed',
+      x: -6, y: 1, z: 1265,
+    });
+
+    assert.equal(result.z, 1265);
+    assert.end();
+  });
+
+  t.test('transforms data values to device scale', (assert) => {
+    const result = normalizeData({
+      ip: '127.0.0.12',
+      action: 'changePositionZoomed',
+      x: -1, y: -7, z: 0,
+    });
+
+    assert.equal(result.x, 312);
+    assert.equal(result.y, 557);
+    assert.end();
+  });
+
+  t.test('Y-axis is inverted. UNACCEPTABLE!', (assert) => {
+    const resultA = normalizeData({
+      action: 'changePositionZoomed',
+      x: 0, y: -6, z: 0,
+    });
+
+    const resultB = normalizeData({
+      action: 'changePositionZoomed',
+      x: 2, y: 6, z: 8,
+    });
+
+    assert.ok(resultB.y < resultA.y, 'higher the input,lower the output');
+    assert.end();
+  });
+});

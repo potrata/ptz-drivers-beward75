@@ -1,4 +1,9 @@
-import {mapReplyKeys} from './util';
+import {pickAndReplace} from './util';
+
+/**
+* @sig {k1:v} -> {k2:v}
+*/
+const mapReplyKeys = pickAndReplace(['pan', 'tilt', 'zoom'], ['x', 'y', 'z']);
 
 const getMatchesOrEmpty = (text, regex) => {
   return text.trim().match(regex) || [];

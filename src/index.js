@@ -6,12 +6,18 @@ import createAuthData from './create-auth-data';
 import normalizeData from './normalize-data';
 import formatUrl from './format-url';
 import parseReply from './parse-reply';
+import config from './device-config.json';
 
-import pkg from './../package.json';
+///TODO: Would be removed soon from driver's API
+const {model} = config;
 
 const buildRequestData = (options) => {
   return R.pipe(
-    R.converge(R.pipe(R.pair, R.zipObj(['url', 'auth'])), [formatUrl, createAuthData]),
+    R.converge(
+      R.pipe(
+        R.pair,
+        R.zipObj(['url', 'auth'])
+      ), [formatUrl, createAuthData]),
     R.merge(options)
   );
 };
@@ -27,16 +33,13 @@ const transformCommand = (command) => {
   )(command);
 };
 
-///TODO: It's useless and should be removed from driver's API
-export const model = pkg.model;
-
 /**
  * @desc Performs HTTP-request to device
  * @param {object} command
  * @param {object} [options]
  * @return {Promise}
  */
-export function execute(command, options = {}) {
+function execute(command, options = {}) {
   const _command = transformCommand(command); // TEMPORARY
   const pipeline = R.pipeP(
     validateCommand,
@@ -47,3 +50,5 @@ export function execute(command, options = {}) {
   );
   return pipeline(_command);
 }
+
+export {model, execute};

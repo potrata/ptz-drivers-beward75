@@ -1,0 +1,9 @@
+{
+  "model": "beward_75",
+  "actionsSupported": [
+    "setPosition",
+    "changePosition",
+    "getPosition",
+    "changePositionZoomed"
+  ]
+}
