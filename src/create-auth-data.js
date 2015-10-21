@@ -1,20 +1,36 @@
 import R from 'ramda';
+import {pickAndReplace} from './util';
 
-const isString = R.is(String);
-const isNotEmpty = R.complement(R.isEmpty);
-const emptyObjIfNil = R.ifElse(R.isNil, R.always({}), R.identity);
-
-// {*} -> Boolean
-const isLoginValid = R.propSatisfies(R.both(isString, isNotEmpty), 'login');
-
-// {k: v} -> [v]
-const getCredentials = R.pipe(R.props(['login', 'password']), R.map(R.defaultTo('')));
-
-// {k: v} -> {m: v}
-const createData = R.pipe(
-  getCredentials,
-  R.zipObj(['user', 'pass']),
-  R.merge({ 'sendImmediately': false })
+/**
+ * @sig  {*} -> Boolean
+ */
+const isLoginValid = R.propSatisfies(
+  R.both(
+    R.is(String),
+    R.complement(R.isEmpty)),
+  'login'
 );
 
-export default R.pipe(R.nthArg(0), emptyObjIfNil, R.ifElse(isLoginValid, createData, R.always({})));
+/**
+ * @sig {k:v} -> {m:v}
+ */
+const createDataObj = R.pipe(
+  pickAndReplace(['login', 'password'], ['user', 'pass']),
+  R.assoc('sendImmediately', false),
+  R.map(R.defaultTo(''))
+);
+
+/**
+ * @sig {k:v} -> {m:v} | {}
+ */
+const createAuthData = R.pipe(
+  R.nthArg(0),
+  R.defaultTo({}),
+  R.ifElse(
+    isLoginValid,
+    createDataObj,
+    R.always({})
+  )
+);
+
+export default createAuthData;

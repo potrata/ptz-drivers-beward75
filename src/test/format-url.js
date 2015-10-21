@@ -2,7 +2,7 @@ import test from 'blue-tape';
 import formatUrl from './../format-url';
 
 test('URL Formatting', (t) => {
-  t.test('returns valid url for supported actions', (assert) => {
+  t.test('returns correct url for "setPosition" and "changePosition" actions', (assert) => {
     const setPositionURL = formatUrl({
       ip: '10.0.11.12',
       action: 'setPosition',
@@ -17,6 +17,17 @@ test('URL Formatting', (t) => {
 
     assert.equals(setPositionURL, `http://10.0.11.12/cgi-bin/com/ptz.cgi?pan=-10&tilt=0&zoom=23`);
     assert.equals(changePositionURL, `http://10.20.30.40/cgi-bin/com/ptz.cgi?rpan=0&rtilt=1&rzoom=2`);
+    assert.end();
+  });
+
+  t.test('returns correct url for "changePositionZoomed" action', (assert) => {
+    const changePositionZoomedURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'changePositionZoomed',
+      x: -2, y: 1,
+    });
+
+    assert.equals(changePositionZoomedURL, `http://196.45.34.56/cgi-bin/com/ptz.cgi?center=-2,1&imagewidth=720&imageheight=576&stream=h264`);
     assert.end();
   });
 

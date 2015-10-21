@@ -1,62 +1,70 @@
 import R from 'ramda';
-import {dataBounds} from './constants';
+import {clamp, scale, extendRangeBy} from './util';
 
-// divideBy :: Number -> Number -> Number
-const divideBy = R.flip(R.divide);
+/**
+ * @sig {k:v} -> Number -> Number)
+ */
+const clampByInputRange = R.pipe(R.prop('from'), clamp);
 
-// subtractBy :: Number -> Number -> Number
-const subtractBy = R.flip(R.subtract);
+/**
+ * @sig {k:v} -> Number -> Number
+ */
+const genericTransform = R.converge(
+  R.pipe, [clampByInputRange, scale, R.always(Math.round)]
+);
 
-// clamp :: Number -> Number -> Number -> Number
-const clamp = R.useWith(R.pipe, [R.max, R.min]);
+/**
+ * @sig {k:v} -> Number -> Number
+ */
+const discreteTransform = R.converge(
+  genericTransform, [
+    R.evolve({ from: extendRangeBy(0.5) }),
+  ]
+);
 
-// scaler :: ([a],[b]) -> Number -> Number
-const scaler = ([fromMin, fromMax], [toMin, toMax]) => {
-  const fromRange = R.subtract(fromMax, fromMin);
-  const toRange = R.subtract(toMax, toMin);
+/**
+ * @sig {k:v} -> Number -> Number
+ */
+const yInvertedTransform = R.converge(
+  R.pipe, [R.always(R.negate), discreteTransform]
+);
 
-  return R.pipe(
-    clamp(fromMin, fromMax),  // Number -> Number
-    subtractBy(fromMin),      // Number -> Number
-    R.multiply(toRange),      // Number -> Number
-    divideBy(fromRange),      // Number -> Number
-    R.add(toMin),             // Number -> Number
-    Math.round                // Number -> Number
-  );
+const actionToTransformLookup = {
+  'setPosition': {
+    x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
+    y: genericTransform({ from: [-180, 180], to: [-10, 190] }),
+    z: genericTransform({ from: [0, 100], to: [0, 9999] }),
+  },
+
+  'changePosition': {
+    x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
+    y: genericTransform({ from: [-180, 180], to: [-10, 190] }),
+    z: genericTransform({ from: [0, 100], to: [-9999, 9999] }),
+  },
+
+  'changePositionZoomed': {
+    x: discreteTransform({ from: [-7, 7], to: [0, 720] }),
+    y: yInvertedTransform({ from: [-7, 7], to: [0, 576] }),
+    z: R.identity,
+  },
 };
 
-// getValueProjector :: [k,v] -> {k:*} -> {k:Number}
-const getValueProjector = ([key, entry]) => {
-  const [from, to] = R.props(['input', 'output'], entry);
-
-  return R.pipe(
-    R.propOr(0, key),         // {k:v} -> Number
-    scaler(from, to),         // Number -> Number
-    R.objOf(key)              // Number -> {k:v}
-  );
-};
-
-// getBounds :: {k:v} -> [[k,v]]
-const getBounds = R.pipe(
+/**
+ * @sig {k:v} -> {*}
+ */
+const getTransformObj = R.pipe(
   R.prop('action'),
-  R.prop(R.__, dataBounds),
-  R.toPairs
+  R.propOr({}, R.__, actionToTransformLookup)
 );
 
-// getValueProjectors :: {*} -> [(... -> *)]
-const getValueProjectors = R.pipe(
-  getBounds,
-  R.map(getValueProjector)
+/**
+ * @sig {k:v} -> {k:m}
+ */
+const normalizeData = R.converge(
+  R.evolve, [
+    getTransformObj,
+    R.identity,
+  ]
 );
 
-// getData :: {*} -> {*}
-const getData = R.pipe(
-  R.converge(
-    R.ap,
-    [getValueProjectors, R.of]
-  ),
-  R.mergeAll
-);
-
-// normalizeData :: {*} -> {*}
-export default R.converge(R.merge, [R.identity, getData]);
+export default normalizeData;

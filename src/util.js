@@ -1,59 +1,62 @@
-import R, {
-  always, identity, concat, curry,
-  pipe, map, join, prop, props, has,
-  zip, zipObj, useWith, converge, unless,
-} from 'ramda';
+import R from 'ramda';
 
-const throwError = (data) => {
+export const throwError = (data) => {
   throw new Error(data);
 };
 
-// getParams :: {k:v} -> [v]
-const getParams = props(['x', 'y', 'z']);
+/**
+ * @sig Number -> Number -> Number
+ */
+export const divideBy = R.flip(R.divide);
 
-// pairToQueryPart :: [k,v] -> String
-const pairToQueryPart = join('=');
+/**
+ * @sig Number -> Number -> Number
+ */
+export const subtractBy = R.flip(R.subtract);
 
-// pairsToQueryString :: [[k,v]] -> String
-const pairsToQueryString = pipe(map(pairToQueryPart), join('&'));
+/**
+ * @sig [k,v] -> Number -> Number
+ */
+export const clamp = R.apply(R.useWith(R.pipe, [R.max, R.min]));
 
-// mapParamsToQuery :: [a] -> {k:v} -> String
-const mapParamsToQuery = curry(
-  pipe(
-    useWith(zip, [identity, getParams]),
-    pairsToQueryString
-  )
+/**
+ * @sig {k:v} -> String
+ */
+export const objToQuery = R.pipe(
+  R.toPairs,
+  R.map(R.join('=')),
+  R.join('&')
 );
 
-const actionParamsLookup = {
-  ['setPosition']: mapParamsToQuery(['pan', 'tilt', 'zoom']),
-  ['changePosition']: mapParamsToQuery(['rpan', 'rtilt', 'rzoom']),
-  ['getPosition']: always(pairToQueryPart(['query', 'position'])),
+/**
+ * @sig [k] -> [m] -> {k:v} -> {m:v}
+ */
+export const pickAndReplace = R.useWith(R.pipe, [R.props, R.zipObj]);
+
+/**
+ * @sig {k:v} -> Number -> Number
+ */
+export const scale = (data) => {
+  const [fromMin, fromMax, toMin, toMax] =
+    R.pipe(R.props(['from', 'to']), R.flatten)(data);
+
+  const fromRange = R.subtract(fromMax, fromMin);
+  const toRange = R.subtract(toMax, toMin);
+
+  return R.pipe(
+    subtractBy(fromMin),      // Number -> Number
+    R.multiply(toRange),      // Number -> Number
+    divideBy(fromRange),      // Number -> Number
+    R.add(toMin)              // Number -> Number
+  );
 };
 
-// isActionValid :: String -> Boolean
-const isActionValid = has(R.__, actionParamsLookup);
+/**
+ * @sig Number -> [a]
+ */
+export const mirroredPairOf = R.lift(R.pair)(R.negate, R.identity);
 
-// getAction :: {k:v} -> v | Error
-const getAction = R.pipe(
-  prop('action'),
-  unless(
-    isActionValid,
-    pipe(concat('unknown action: '), throwError),
-  )
-);
-
-
-// convertData :: {*} -> String | Error
-export const buildQueryString = converge(
-  R.call, [
-    pipe(getAction, prop(R.__, actionParamsLookup)),
-    identity,
-  ]
-);
-
-// mapReplyKeys :: {k1:v} -> {k2:v}
-export const mapReplyKeys = pipe(
-  props(['pan', 'tilt', 'zoom']),
-  zipObj(['x', 'y', 'z'])
-);
+/**
+ * @sig Number -> [a,b] -> [c,d]
+ */
+export const extendRangeBy = R.pipe(mirroredPairOf, R.zipWith(R.add));

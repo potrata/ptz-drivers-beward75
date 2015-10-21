@@ -1,5 +1,5 @@
 import validate from 'validate.js';
-import {actionsSupported} from './constants';
+import config from './device-config.json';
 
 const dataConstraint = {
   presence: true,
@@ -9,7 +9,7 @@ const dataConstraint = {
 const constraints = {
   'action': {
     presence: true,
-    inclusion: actionsSupported,
+    inclusion: config.actionsSupported,
   },
 
   'x': dataConstraint,
@@ -19,10 +19,11 @@ const constraints = {
 
 /**
  * Performs business-validation of command
+ * @async
  * @param command
  * @returns {Promise}
  */
-export default function validateCommand(command) {
+function validateCommand(command) {
   return new Promise((resolve, reject) => {
     const validationResult = validate(command, constraints);
     if (!validationResult) {
@@ -32,3 +33,5 @@ export default function validateCommand(command) {
     }
   });
 }
+
+export default validateCommand;
