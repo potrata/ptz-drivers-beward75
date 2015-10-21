@@ -24,10 +24,10 @@ test('URL Formatting', (t) => {
     const changePositionZoomedURL = formatUrl({
       ip: '196.45.34.56',
       action: 'changePositionZoomed',
-      x: -2, y: 1,
+      x: -234, y: 118,
     });
 
-    assert.equals(changePositionZoomedURL, `http://196.45.34.56/cgi-bin/com/ptz.cgi?center=-2,1&imagewidth=720&imageheight=576&stream=h264`);
+    assert.equals(changePositionZoomedURL, `http://196.45.34.56/cgi-bin/com/ptz.cgi?center=-234,118&imagewidth=720&imageheight=576&stream=h264`);
     assert.end();
   });
 

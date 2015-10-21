@@ -42,7 +42,7 @@ test('Data Normalization', (t) => {
   });
 });
 
-test('Data transformations with "setPositionZoomed" command', (t) => {
+test('Data transformations with "changePositionZoomed" command', (t) => {
   t.test('ignores "z" parameter (pass it through)', (assert) => {
     const result = normalizeData({
       action: 'changePositionZoomed',

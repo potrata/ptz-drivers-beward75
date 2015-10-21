@@ -16,10 +16,9 @@ const genericTransform = R.converge(
 /**
  * @sig {k:v} -> Number -> Number
  */
-const discreteTransform = R.converge(
-  genericTransform, [
-    R.evolve({ from: extendRangeBy(0.5) }),
-  ]
+const discreteTransform = R.pipe(
+  R.evolve({ from: extendRangeBy(0.5) }),
+  genericTransform
 );
 
 /**
