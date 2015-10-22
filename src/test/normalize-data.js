@@ -10,7 +10,7 @@ test('Data Normalization', (t) => {
     });
 
     assert.equal(result.x, -180);
-    assert.equal(result.y, 190);
+    assert.equal(result.y, 100);
     assert.equal(result.z, 9999);
     assert.end();
   });
@@ -28,15 +28,15 @@ test('Data Normalization', (t) => {
     assert.end();
   });
 
-  t.test('transforms data values to device scale', (assert) => {
+  t.test('transforms data values to device scale for setPosition', (assert) => {
     const result = normalizeData({
       ip: '10.20.30.40',
       action: 'setPosition',
-      x: 14, y: -20, z: 50,
+      x: 14, y: 88, z: 50,
     });
 
     assert.equal(result.x, 14);
-    assert.equal(result.y, 79);
+    assert.equal(result.y, 88);
     assert.equal(result.z, 5000);
     assert.end();
   });
@@ -53,7 +53,7 @@ test('Data transformations with "changePositionZoomed" command', (t) => {
     assert.end();
   });
 
-  t.test('transforms data values to device scale', (assert) => {
+  t.test('transforms data values to device scale for changePositionZoomed', (assert) => {
     const result = normalizeData({
       ip: '127.0.0.12',
       action: 'changePositionZoomed',

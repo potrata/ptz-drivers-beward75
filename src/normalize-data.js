@@ -31,14 +31,14 @@ const yInvertedTransform = R.converge(
 const actionToTransformLookup = {
   'setPosition': {
     x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
-    y: genericTransform({ from: [-180, 180], to: [-10, 190] }),
+    y: genericTransform({ from: [-10, 100], to: [-10, 100] }),
     z: genericTransform({ from: [0, 100], to: [0, 9999] }),
   },
 
   'changePosition': {
     x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
-    y: genericTransform({ from: [-180, 180], to: [-10, 190] }),
-    z: genericTransform({ from: [0, 100], to: [-9999, 9999] }),
+    y: genericTransform({ from: [-180, 180], to: [-180, 180] }),
+    z: genericTransform({ from: [-100, 100], to: [-9999, 9999] }),
   },
 
   'changePositionZoomed': {
