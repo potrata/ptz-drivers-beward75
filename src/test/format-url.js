@@ -54,4 +54,30 @@ test('URL Formatting', (t) => {
     assert.equals(setSpeedURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?continuouspantiltmove=-50,50&continuouszoommove=100');
     assert.end();
   });
+
+  t.test('returns correct url for "setFocus" action', (assert) => {
+    const setFocusURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'setFocus',
+      x: 13,
+      y: 666,
+      z: 100,
+    });
+
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?rfocus=100');
+    assert.end();
+  });
+
+  t.test('returns correct url to set autofocus on for "setFocus" action with 0 value', (assert) => {
+    const setFocusURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'setFocus',
+      x: 13,
+      y: 666,
+      z: 0,
+    });
+
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=on');
+    assert.end();
+  });
 });

@@ -46,9 +46,14 @@ const actionToTransformLookup = {
     y: yInvertedTransform({ from: [-7, 7], to: [0, 576] }),
     z: R.identity,
   },
+
   'setSpeed': {
     x: genericTransform({ from: [-7, 7], to: [-100, 100] }),
     y: genericTransform({ from: [-7, 7], to: [-100, 100] }),
+    z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
+  },
+
+  'setFocus': {
     z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
   },
 };
