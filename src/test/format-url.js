@@ -56,7 +56,7 @@ test('URL Formatting', (t) => {
   });
 
   t.test('returns correct url for "setFocus" action', (assert) => {
-    const setSpeedURL = formatUrl({
+    const setFocusURL = formatUrl({
       ip: '196.45.34.56',
       action: 'setFocus',
       x: 13,
@@ -64,12 +64,12 @@ test('URL Formatting', (t) => {
       z: 100,
     });
 
-    assert.equals(setSpeedURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?rfocus=100');
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?rfocus=100');
     assert.end();
   });
 
   t.test('returns correct url to set autofocus on for "setFocus" action with 0 value', (assert) => {
-    const setSpeedURL = formatUrl({
+    const setFocusURL = formatUrl({
       ip: '196.45.34.56',
       action: 'setFocus',
       x: 13,
@@ -77,7 +77,7 @@ test('URL Formatting', (t) => {
       z: 0,
     });
 
-    assert.equals(setSpeedURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=on');
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=on');
     assert.end();
   });
 });
