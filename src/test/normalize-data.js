@@ -80,3 +80,20 @@ test('Data transformations with "changePositionZoomed" command', (t) => {
     assert.end();
   });
 });
+
+test('Data transformations with "setSpeed" command', (t) => {
+  t.test('transforms data values to device scale for setSpeed', (assert) => {
+    const result = normalizeData({
+      ip: '196.45.34.56',
+      action: 'setSpeed',
+      x: -5,
+      y: 5,
+      z: 1,
+    });
+
+    assert.equal(result.x, -71);
+    assert.equal(result.y, 71);
+    assert.equal(result.z, 100);
+    assert.end();
+  });
+});

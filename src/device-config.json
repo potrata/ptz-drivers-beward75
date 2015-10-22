@@ -4,6 +4,7 @@
     "setPosition",
     "changePosition",
     "getPosition",
-    "changePositionZoomed"
+    "changePositionZoomed",
+    "setSpeed"
   ]
 }

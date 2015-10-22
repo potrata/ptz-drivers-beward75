@@ -41,4 +41,17 @@ test('URL Formatting', (t) => {
     assert.throws(() => formatUrl(testData), /unsupported|unknown/);
     assert.end();
   });
+
+  t.test('returns correct url for "setSpeed" action', (assert) => {
+    const setSpeedURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'setSpeed',
+      x: -50,
+      y: 50,
+      z: 100,
+    });
+
+    assert.equals(setSpeedURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?continuouspantiltmove=-50,50&continuouszoommove=100');
+    assert.end();
+  });
 });
