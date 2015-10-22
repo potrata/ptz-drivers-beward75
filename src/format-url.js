@@ -37,6 +37,15 @@ const transformFnLookup = {
     }),
     objToQuery
   ),
+  'setSpeed': R.pipe(
+    R.converge(
+      R.merge, [
+        R.pipe(joinXY, R.objOf('continuouspantiltmove')),
+        R.pipe(R.prop('z'), R.objOf('continuouszoommove')),
+      ]
+    ),
+    objToQuery
+  ),
 };
 
 /**
