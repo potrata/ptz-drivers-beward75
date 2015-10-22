@@ -97,3 +97,32 @@ test('Data transformations with "setSpeed" command', (t) => {
     assert.end();
   });
 });
+
+test('Data transformations with "setFocus" command', (t) => {
+  t.test('ignores x and y parameters', (assert) => {
+    const result = normalizeData({
+      ip: '196.45.34.56',
+      action: 'setFocus',
+      x: -5,
+      y: 5,
+      z: 1,
+    });
+
+    assert.equal(result.x, -5);
+    assert.equal(result.y, 5);
+    assert.end();
+  });
+
+  t.test('transforms data values to device scale for setFocus', (assert) => {
+    const result = normalizeData({
+      ip: '196.45.34.56',
+      action: 'setFocus',
+      x: -5,
+      y: 5,
+      z: 1,
+    });
+
+    assert.equal(result.z, 100);
+    assert.end();
+  });
+});
