@@ -11,7 +11,7 @@ test('Data Normalization', (t) => {
 
     assert.equal(result.x, -180);
     assert.equal(result.y, 100);
-    assert.equal(result.z, 9999);
+    assert.equal(result.z, 1274);
     assert.end();
   });
 
@@ -32,36 +32,27 @@ test('Data Normalization', (t) => {
     const result = normalizeData({
       ip: '10.20.30.40',
       action: 'setPosition',
-      x: 14, y: 88, z: 50,
+      x: 14, y: 88, z: 100,
     });
 
     assert.equal(result.x, 14);
     assert.equal(result.y, 88);
-    assert.equal(result.z, 5000);
+    assert.equal(result.z, 1274);
     assert.end();
   });
 });
 
 test('Data transformations with "changePositionZoomed" command', (t) => {
-  t.test('ignores "z" parameter (pass it through)', (assert) => {
-    const result = normalizeData({
-      action: 'changePositionZoomed',
-      x: -6, y: 1, z: 1265,
-    });
-
-    assert.equal(result.z, 1265);
-    assert.end();
-  });
-
   t.test('transforms data values to device scale for changePositionZoomed', (assert) => {
     const result = normalizeData({
       ip: '127.0.0.12',
       action: 'changePositionZoomed',
-      x: -1, y: -7, z: 0,
+      x: -1, y: -7, z: 1,
     });
 
     assert.equal(result.x, 312);
     assert.equal(result.y, 557);
+    assert.equal(result.z, 100);
     assert.end();
   });
 
@@ -98,11 +89,11 @@ test('Data transformations with "setSpeed" command', (t) => {
   });
 });
 
-test('Data transformations with "setFocus" command', (t) => {
+test('Data transformations with "changeFocus" command', (t) => {
   t.test('ignores x and y parameters', (assert) => {
     const result = normalizeData({
       ip: '196.45.34.56',
-      action: 'setFocus',
+      action: 'changeFocus',
       x: -5,
       y: 5,
       z: 1,
@@ -113,10 +104,10 @@ test('Data transformations with "setFocus" command', (t) => {
     assert.end();
   });
 
-  t.test('transforms data values to device scale for setFocus', (assert) => {
+  t.test('transforms data values to device scale for changeFocus', (assert) => {
     const result = normalizeData({
       ip: '196.45.34.56',
-      action: 'setFocus',
+      action: 'changeFocus',
       x: -5,
       y: 5,
       z: 1,

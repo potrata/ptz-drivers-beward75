@@ -55,10 +55,10 @@ test('URL Formatting', (t) => {
     assert.end();
   });
 
-  t.test('returns correct url for "setFocus" action', (assert) => {
+  t.test('returns correct url for "changeFocus" action', (assert) => {
     const setFocusURL = formatUrl({
       ip: '196.45.34.56',
-      action: 'setFocus',
+      action: 'changeFocus',
       x: 13,
       y: 666,
       z: 100,
@@ -68,10 +68,10 @@ test('URL Formatting', (t) => {
     assert.end();
   });
 
-  t.test('returns correct url to set autofocus on for "setFocus" action with 0 value', (assert) => {
+  t.test('returns correct url to set autofocus on for "changeFocus" action with 0 value', (assert) => {
     const setFocusURL = formatUrl({
       ip: '196.45.34.56',
-      action: 'setFocus',
+      action: 'changeFocus',
       x: 13,
       y: 666,
       z: 0,

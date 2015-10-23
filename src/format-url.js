@@ -46,7 +46,7 @@ const transformFnLookup = {
     ),
     objToQuery
   ),
-  'setFocus': R.pipe(
+  'changeFocus': R.pipe(
     R.ifElse(
       R.propSatisfies(z => z === 0, 'z'),
       R.always({ autofocus: 'on' }),

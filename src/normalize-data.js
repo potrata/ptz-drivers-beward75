@@ -32,19 +32,19 @@ const actionToTransformLookup = {
   'setPosition': {
     x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
     y: genericTransform({ from: [-10, 100], to: [-10, 100] }),
-    z: genericTransform({ from: [0, 100], to: [0, 9999] }),
+    z: genericTransform({ from: [0, 100], to: [0, 1274] }),
   },
 
   'changePosition': {
     x: genericTransform({ from: [-180, 180], to: [-180, 180] }),
     y: genericTransform({ from: [-180, 180], to: [-180, 180] }),
-    z: genericTransform({ from: [-100, 100], to: [-9999, 9999] }),
+    z: genericTransform({ from: [-100, 100], to: [-1274, 1274] }),
   },
 
   'changePositionZoomed': {
     x: discreteTransform({ from: [-7, 7], to: [0, 720] }),
     y: yInvertedTransform({ from: [-7, 7], to: [0, 576] }),
-    z: R.identity,
+    z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
   },
 
   'setSpeed': {
@@ -53,7 +53,7 @@ const actionToTransformLookup = {
     z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
   },
 
-  'setFocus': {
+  'changeFocus': {
     z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
   },
 };
