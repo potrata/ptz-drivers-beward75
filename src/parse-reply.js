@@ -1,8 +1,10 @@
 import {pickAndReplace} from './util';
+import normalizeData from './normalize-data';
+import R from 'ramda';
 
 /**
-* @sig {k1:v} -> {k2:v}
-*/
+ * @sig {k1:v} -> {k2:v}
+ */
 const mapReplyKeys = pickAndReplace(['pan', 'tilt', 'zoom'], ['x', 'y', 'z']);
 
 const getMatchesOrEmpty = (text, regex) => {
@@ -30,8 +32,13 @@ export default function parseReply(reply) {
     .map(expressionToObj)
     .reduce((collector, entry) => ({ ...collector, ...entry }), {});
 
-  if (!Object.keys(result).length) {
-    return reply;
+  if (Object.keys(result).length) {
+    return R.pipe(
+      mapReplyKeys,
+      R.merge({ action: 'getPosition' }),
+      normalizeData,
+      R.omit(['action'])
+    )(result);
   }
-  return mapReplyKeys(result);
+  return reply;
 }
