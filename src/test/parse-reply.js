@@ -2,12 +2,6 @@ import test from 'blue-tape';
 import parseReply from './../parse-reply';
 
 test('Reply Parsing', (t) => {
-  t.test('throws with reply string itself if parsing failed', (assert) => {
-    const testData = `some unparseable string`;
-    assert.throws(() => parseReply(testData), /some unparseable string/);
-    assert.end();
-  });
-
   t.test('returns an object when reply is device position info', (assert) => {
     const result = parseReply(`
       pan = 1.0,
