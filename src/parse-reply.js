@@ -31,8 +31,7 @@ export default function parseReply(reply) {
     .reduce((collector, entry) => ({ ...collector, ...entry }), {});
 
   if (!Object.keys(result).length) {
-    /** just throw in case of finding no matches at all **/
-    throw new Error(`reply parsing failed:\n${reply}`);
+    return reply;
   }
   return mapReplyKeys(result);
 }

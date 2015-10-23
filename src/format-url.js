@@ -28,13 +28,18 @@ const transformFnLookup = {
   'getPosition': R.always('query=position'),
 
   'changePositionZoomed': R.pipe(
-    joinXY,
-    R.objOf('center'),
-    R.merge(R.__, {
-      'imagewidth': '720',
-      'imageheight': '576',
-      'stream': 'h264',
-    }),
+    R.converge(
+      R.merge, [
+        R.pipe(joinXY,
+          R.objOf('center'),
+          R.merge(R.__, {
+            'imagewidth': '720',
+            'imageheight': '576',
+            'stream': 'h264',
+          })),
+        R.pipe(R.prop('z'), R.objOf('rzoom')),
+      ]
+    ),
     objToQuery
   ),
   'setSpeed': R.pipe(
