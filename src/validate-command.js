@@ -2,7 +2,7 @@ import validate from 'validate.js';
 import config from './device-config.json';
 
 validate.validators.ptzOptionalParameter = (value, options, key, attributes) => {
-  if (attributes.action !== options.action && !Number.isInteger(value)) {
+  if (attributes.action !== options.action && !Number.isInteger(parseInt(value, 10))) {
     return 'is not valid';
   }
   return null;

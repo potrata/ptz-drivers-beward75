@@ -35,7 +35,6 @@ test('Command validation', (t) => {
       assert.deepEqual(err, {
         'x': ['X is not valid'],
         'y': ['Y is not valid'],
-        'z': ['Z is not valid'],
       });
       return err;
     });
