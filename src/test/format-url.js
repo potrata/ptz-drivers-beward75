@@ -64,7 +64,7 @@ test('URL Formatting', (t) => {
       z: 100,
     });
 
-    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?rfocus=100');
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=off&rfocus=100');
     assert.end();
   });
 
