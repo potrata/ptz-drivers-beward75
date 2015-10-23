@@ -5,6 +5,7 @@
     "changePosition",
     "getPosition",
     "changePositionZoomed",
-    "setSpeed"
+    "setSpeed",
+    "setFocus"
   ]
 }
