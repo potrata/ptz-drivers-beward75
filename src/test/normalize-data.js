@@ -113,7 +113,7 @@ test('Data transformations with "changeFocus" command', (t) => {
       z: 1,
     });
 
-    assert.equal(result.z, 100);
+    assert.equal(result.z, 10);
     assert.end();
   });
 });

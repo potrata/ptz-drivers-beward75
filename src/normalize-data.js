@@ -54,7 +54,7 @@ const actionToTransformLookup = {
   },
 
   'changeFocus': {
-    z: genericTransform({ from: [-1, 1], to: [-100, 100] }),
+    z: genericTransform({ from: [-1, 1], to: [-10, 10] }),
   },
 
   'getPosition': {
