@@ -1,6 +1,6 @@
 {
   "name": "@hp/ptz-drivers-beward75",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "PTZ Driver for Beward-75",
   "main": "./lib/index",
   "scripts": {
