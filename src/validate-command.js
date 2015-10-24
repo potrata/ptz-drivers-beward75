@@ -1,9 +1,17 @@
 import validate from 'validate.js';
 import config from './device-config.json';
 
-const dataConstraint = {
-  presence: true,
-  numericality: {},
+validate.validators.ptzOptionalParameter = (value, options, key, attributes) => {
+  if (attributes.action !== options.action && !Number.isInteger(parseInt(value, 10))) {
+    return 'is not valid';
+  }
+  return null;
+};
+
+const ptzConstraint = {
+  ptzOptionalParameter: {
+    action: 'getPosition',
+  },
 };
 
 const constraints = {
@@ -12,9 +20,9 @@ const constraints = {
     inclusion: config.actionsSupported,
   },
 
-  'x': dataConstraint,
-  'y': dataConstraint,
-  'z': dataConstraint,
+  'x': ptzConstraint,
+  'y': ptzConstraint,
+  'z': ptzConstraint,
 };
 
 /**

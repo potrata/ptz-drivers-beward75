@@ -3,7 +3,7 @@
 ![ptz](./beward.png)
 
 ### Current Version
-0.0.2
+0.1.0
 
 ### Installation
 
@@ -28,3 +28,5 @@ Cache-Control: no-cache
     - getPosition
     - changePosition
     - changePositionZoomed
+    - setSpeed
+    - changeFocus

@@ -33,9 +33,8 @@ test('Command validation', (t) => {
       x: 'abcdefg', y: { 's': 2 }, z: [1, 2, 3],
     }).catch(err => {
       assert.deepEqual(err, {
-        'x': ['X is not a number'],
-        'y': ['Y is not a number'],
-        'z': ['Z is not a number'],
+        'x': ['X is not valid'],
+        'y': ['Y is not valid'],
       });
       return err;
     });

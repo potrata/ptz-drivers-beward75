@@ -7,6 +7,7 @@ import normalizeData from './normalize-data';
 import formatUrl from './format-url';
 import parseReply from './parse-reply';
 import config from './device-config.json';
+import { name, version } from '../package.json';
 
 ///TODO: Would be removed soon from driver's API
 const {model} = config;
@@ -51,4 +52,4 @@ function execute(command, options = {}) {
   return pipeline(_command);
 }
 
-export {model, execute};
+export {model, name, version, execute};

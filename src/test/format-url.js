@@ -24,10 +24,10 @@ test('URL Formatting', (t) => {
     const changePositionZoomedURL = formatUrl({
       ip: '196.45.34.56',
       action: 'changePositionZoomed',
-      x: -234, y: 118,
+      x: -234, y: 118, z: 100,
     });
 
-    assert.equals(changePositionZoomedURL, `http://196.45.34.56/cgi-bin/com/ptz.cgi?center=-234,118&imagewidth=720&imageheight=576&stream=h264`);
+    assert.equals(changePositionZoomedURL, `http://196.45.34.56/cgi-bin/com/ptz.cgi?center=-234,118&imagewidth=720&imageheight=576&stream=h264&rzoom=100`);
     assert.end();
   });
 
@@ -39,6 +39,45 @@ test('URL Formatting', (t) => {
     };
 
     assert.throws(() => formatUrl(testData), /unsupported|unknown/);
+    assert.end();
+  });
+
+  t.test('returns correct url for "setSpeed" action', (assert) => {
+    const setSpeedURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'setSpeed',
+      x: -50,
+      y: 50,
+      z: 100,
+    });
+
+    assert.equals(setSpeedURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?continuouspantiltmove=-50,50&continuouszoommove=100');
+    assert.end();
+  });
+
+  t.test('returns correct url for "changeFocus" action', (assert) => {
+    const setFocusURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'changeFocus',
+      x: 13,
+      y: 666,
+      z: 100,
+    });
+
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=off&rfocus=100');
+    assert.end();
+  });
+
+  t.test('returns correct url to set autofocus on for "changeFocus" action with 0 value', (assert) => {
+    const setFocusURL = formatUrl({
+      ip: '196.45.34.56',
+      action: 'changeFocus',
+      x: 13,
+      y: 666,
+      z: 0,
+    });
+
+    assert.equals(setFocusURL, 'http://196.45.34.56/cgi-bin/com/ptz.cgi?autofocus=on');
     assert.end();
   });
 });

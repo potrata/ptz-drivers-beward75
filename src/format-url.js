@@ -28,13 +28,38 @@ const transformFnLookup = {
   'getPosition': R.always('query=position'),
 
   'changePositionZoomed': R.pipe(
-    joinXY,
-    R.objOf('center'),
-    R.merge(R.__, {
-      'imagewidth': '720',
-      'imageheight': '576',
-      'stream': 'h264',
-    }),
+    R.converge(
+      R.merge, [
+        R.pipe(joinXY,
+          R.objOf('center'),
+          R.merge(R.__, {
+            'imagewidth': '720',
+            'imageheight': '576',
+            'stream': 'h264',
+          })),
+        R.pipe(R.prop('z'), R.objOf('rzoom')),
+      ]
+    ),
+    objToQuery
+  ),
+  'setSpeed': R.pipe(
+    R.converge(
+      R.merge, [
+        R.pipe(joinXY, R.objOf('continuouspantiltmove')),
+        R.pipe(R.prop('z'), R.objOf('continuouszoommove')),
+      ]
+    ),
+    objToQuery
+  ),
+  'changeFocus': R.pipe(
+    R.ifElse(
+      R.propSatisfies(z => z === 0, 'z'),
+      R.always({ autofocus: 'on' }),
+      R.pipe(
+        pickAndReplace(['z'])(['rfocus']),
+        R.merge({ autofocus: 'off' })
+      )
+    ),
     objToQuery
   ),
 };
