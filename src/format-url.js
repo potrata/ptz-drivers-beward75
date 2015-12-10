@@ -53,7 +53,7 @@ const transformFnLookup = {
   ),
   'changeFocus': R.pipe(
     R.ifElse(
-      R.propSatisfies(z => z === 0, 'z'),
+      R.propEq('z', 0),
       R.always({ autofocus: 'on' }),
       R.pipe(
         pickAndReplace(['z'])(['rfocus']),
