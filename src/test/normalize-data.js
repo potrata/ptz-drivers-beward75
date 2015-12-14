@@ -10,7 +10,7 @@ test('Data Normalization', (t) => {
     });
 
     assert.equal(result.x, -180);
-    assert.equal(result.y, 100);
+    assert.equal(result.y, 190);
     assert.equal(result.z, 1274);
     assert.end();
   });
