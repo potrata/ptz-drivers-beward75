@@ -8,6 +8,7 @@ import formatUrl from './format-url';
 import parseReply from './parse-reply';
 import config from './device-config.json';
 import { name, version } from '../package.json';
+import getBounds from './format-bounds';
 
 ///TODO: Would be removed soon from driver's API
 const {model} = config;
@@ -41,15 +42,19 @@ const transformCommand = (command) => {
  * @return {Promise}
  */
 function execute(command, options = {}) {
-  const _command = transformCommand(command); // TEMPORARY
-  const pipeline = R.pipeP(
-    validateCommand,
-    normalizeData,
-    buildRequestData(options),
-    request,
-    parseReply
-  );
-  return pipeline(_command);
+  return R.ifElse(
+    R.propEq('action', 'getBounds'),
+    getBounds,
+    executeRequest(options)
+  )(transformCommand(command));
 }
+
+const executeRequest = (options) => R.pipeP(
+  validateCommand,
+  normalizeData,
+  buildRequestData(options),
+  request,
+  parseReply
+);
 
 export {model, name, version, execute};
