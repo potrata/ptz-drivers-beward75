@@ -1,7 +1,7 @@
 # PTZ Driver for Beward-75
 
 ### Current Version
-0.1.0
+0.1.2
 
 ### Installation
 
