@@ -1,6 +1,4 @@
-# PTZ Driver for [Beward-75](https://confluence.head-point.ru/display/HPPTZ/Beward+75)
-
-![ptz](./beward.png)
+# PTZ Driver for Beward-75
 
 ### Current Version
 0.1.0
